@@ -5,10 +5,12 @@
  * For more detailed information on multi-project builds, please refer to https://docs.gradle.org/8.14.2/userguide/multi_project_builds.html in the Gradle documentation.
  */
 
-plugins {
-    // Apply the foojay-resolver plugin to allow automatic download of JDKs
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
-}
+// The foojay-resolver plugin is normally used to download JDKs automatically.
+// In environments without network access this plugin causes the build to fail,
+// so it is disabled here.
+// plugins {
+//     id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
+// }
 
 rootProject.name = "springer"
 include("app")

@@ -95,7 +95,14 @@ public class UtilityService {
         Map<String, Object> result = new HashMap<>();
         result.put("encodedText", encoded);
         result.put("timestamp", LocalDateTime.now());
-        
+
+        if (encoded == null) {
+            result.put("decoded", null);
+            result.put("success", false);
+            result.put("error", "Input is null");
+            return result;
+        }
+
         try {
             byte[] decodedBytes = Base64.getDecoder().decode(encoded);
             String decoded = new String(decodedBytes);

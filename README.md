@@ -1,5 +1,11 @@
 # Java Playground - Expanded Spring Boot API
 
+<p align="center">
+    <img src="./images/bean-swing.png" alt="Bean on a swing" width="300" height="300">
+    <br/>
+    Java daba doo!
+</p>
+
 An expanded Spring Boot application with multiple endpoints for API testing, utilities, and more!
 
 ## Features

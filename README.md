@@ -174,19 +174,21 @@ All endpoints return JSON responses with consistent structure:
 ```
 app/
 ├── src/main/java/org/example/
-│   ├── App.java                    # Main application class
+│   ├── App.java                           # Spring Boot entry point
 │   ├── config/
-│   │   └── AppConfig.java          # Configuration beans
+│   │   └── AppConfig.java                 # Configuration beans
 │   ├── controller/
-│   │   ├── ApiController.java      # API testing endpoints
-│   │   └── UtilityController.java  # Utility endpoints
+│   │   ├── basic/
+│   │   │   └── BasicController.java       # Basic endpoints (home, greeting, etc.)
+│   │   ├── ApiController.java             # API testing endpoints
+│   │   └── UtilityController.java         # Utility endpoints
 │   └── service/
-│       ├── ApiPingService.java     # API ping functionality
-│       ├── IpLocationService.java  # IP geolocation functionality
-│       └── UtilityService.java     # Utility functions
+│       ├── ApiPingService.java            # API ping functionality
+│       ├── IpLocationService.java         # IP geolocation functionality
+│       └── UtilityService.java            # Utility functions
 └── src/test/java/org/example/
     └── controller/
-        └── ApiControllerTest.java  # Unit tests
+        └── ApiControllerTest.java         # Unit tests
 ```
 
 ### Adding New Endpoints

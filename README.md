@@ -10,20 +10,25 @@ An expanded Spring Boot application with multiple endpoints for API testing, uti
 
 ## Features
 
+- **🔐 OAuth2 Authentication**: Google and GitHub OAuth2 login support
+- **🛡️ Spring Security**: Form-based and OAuth2 authentication
+- **🔒 Protected Endpoints**: Secure API access with authentication
 - **API Ping Endpoints**: Test and monitor external APIs
 - **IP Location Lookup**: Get geographical location information for IP addresses
 - **Utility Endpoints**: Various helper functions (Base64 encoding, email validation, etc.)
 - **System Information**: Get runtime and system details
 - **Interactive Documentation**: Swagger UI integration
 - **Health Monitoring**: Built-in actuator endpoints
+- **📊 User Dashboard**: Authentication status and protected endpoint access
 
 ## Getting Started
 
 ### Prerequisites
 - Java 21 or higher
 - Gradle 8.14.2 or higher
+- OAuth2 provider accounts (Google, GitHub) - optional for OAuth features
 
-### Running the Application
+### Quick Start
 
 ```bash
 # Using Gradle wrapper (recommended)
@@ -34,6 +39,16 @@ gradle bootRun
 ```
 
 The application will start on `http://localhost:8080`
+
+### 🔐 OAuth Authentication Setup
+
+For full OAuth2 functionality, see the detailed setup guide: **[OAuth_SETUP.md](OAuth_SETUP.md)**
+
+**Quick Demo**: You can test the authentication immediately using the built-in demo credentials:
+- **Admin**: `admin` / `admin123`
+- **User**: `demo` / `demo123`
+
+Visit `http://localhost:8080` and try accessing protected endpoints like `/api/ping` - you'll be redirected to the login page.
 
 ### Building the Application
 
@@ -49,16 +64,31 @@ The application will start on `http://localhost:8080`
 
 ## API Endpoints
 
-### Basic Endpoints
+> **🔒 Note**: Most API endpoints now require authentication. See the [Authentication](#authentication) section below.
+
+### Public Endpoints (No Authentication Required)
 
 | Method | Endpoint | Description | Example |
 |--------|----------|-------------|---------|
 | GET | `/` | Welcome message and API overview | `curl http://localhost:8080/` |
 | GET | `/greeting` | Personalized greeting | `curl http://localhost:8080/greeting?name=John` |
+| GET | `/help` | Complete API documentation | `curl http://localhost:8080/help` |
+| GET | `/login` | Login page | Visit in browser |
+| GET | `/swagger-ui.html` | Interactive API documentation | Visit in browser |
+| GET | `/actuator/health` | Application health status | `curl http://localhost:8080/actuator/health` |
+
+### Protected Endpoints (Authentication Required)
+
+#### Basic Endpoints
+
+| Method | Endpoint | Description | Example |
+|--------|----------|-------------|---------|
 | GET | `/status` | Application status and memory info | `curl http://localhost:8080/status` |
 | GET | `/echo/{message}` | Echo message with transformations | `curl http://localhost:8080/echo/hello` |
 | GET | `/random` | Generate random numbers and values | `curl http://localhost:8080/random` |
-| GET | `/help` | Complete API documentation | `curl http://localhost:8080/help` |
+| GET | `/dashboard` | User dashboard (after login) | Visit in browser |
+| GET | `/user` | Current user information | `curl http://localhost:8080/user` |
+| GET | `/auth-status` | Authentication status | `curl http://localhost:8080/auth-status` |
 
 ### API Testing Endpoints (`/api/*`)
 
@@ -93,6 +123,42 @@ The application will start on `http://localhost:8080`
 | GET | `/actuator/info` | Application information |
 | GET | `/swagger-ui.html` | Interactive API documentation |
 | GET | `/v3/api-docs` | OpenAPI specification |
+
+## Authentication
+
+The application supports multiple authentication methods:
+
+### 1. OAuth2 Login
+- **Google OAuth2**: Click "Continue with Google" on login page
+- **GitHub OAuth2**: Click "Continue with GitHub" on login page
+
+### 2. Form-Based Login
+Use demo credentials:
+- **Admin**: username=`admin`, password=`admin123` (ADMIN, USER roles)
+- **User**: username=`demo`, password=`demo123` (USER role)
+
+### 3. Accessing Protected Endpoints
+
+After authentication, you can access protected endpoints:
+
+```bash
+# Method 1: Use browser session (login via browser first)
+# Then access endpoints directly in browser or use browser's session
+
+# Method 2: Use curl with session cookie
+# First login via browser, then extract JSESSIONID cookie
+curl -b "JSESSIONID=your-session-id" http://localhost:8080/api/ping?url=https://httpbin.org/get
+```
+
+### Authentication Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/login` | Login page with OAuth2 and form options |
+| GET | `/logout` | Logout and clear session |
+| GET | `/dashboard` | User dashboard with authentication details |
+| GET | `/user` | Current user information (JSON) |
+| GET | `/auth-status` | Authentication status (JSON) |
 
 ## Example Usage
 
@@ -206,6 +272,10 @@ app/
 
 - Spring Boot 3.3.1
 - Spring Boot Starter Web
+- Spring Boot Starter Security
+- Spring Boot Starter OAuth2 Client
+- Spring Boot Starter OAuth2 Resource Server
+- Spring Boot Starter Thymeleaf
 - Spring Boot Starter Actuator
 - SpringDoc OpenAPI (Swagger)
 - JUnit 5 (for testing)
